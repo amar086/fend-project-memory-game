@@ -9,6 +9,8 @@
  *   - loop through each card and create its HTML
  *   - add each card's HTML to the page
  */
+const cards = ["diamonds", "paper-plane-o", "anchor", "bolt", "cube", "leaf", "bicycle", "bomb",
+"diamonds", "paper-plane-o", "anchor", "bolt", "cube", "leaf", "bicycle", "bomb"];
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
@@ -25,7 +27,24 @@ function shuffle(array) {
     return array;
 }
 
-
+function getClass(index) {
+    return "fa-" + cards[index];
+}
+function createCardsHTML(array) {
+    array = shuffle(array);
+    for (let i = 1; i <= array.length; i++) {
+        const listItem = document.createElement("li");
+        listItem.classList.add("card");
+        const icon = document.createElement("i");
+        const iClass = getClass(i); // get the class of card at index i
+        icon.classList.add("fa");
+        icon.classList.add(iClass);
+        listItem.appendChild(icon);
+        const list = document.getElementsByClassName("deck");
+        list[0].appendChild(listItem);
+    }
+}
+createCardsHTML(cards);
 /*
  * set up the event listener for a card. If a card is clicked:
  *  - display the card's symbol (put this functionality in another function that you call from this one)
