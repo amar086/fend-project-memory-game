@@ -9,9 +9,10 @@
  *   - loop through each card and create its HTML
  *   - add each card's HTML to the page
  */
-const cards = ["diamonds", "paper-plane-o", "anchor", "bolt", "cube", "leaf", "bicycle", "bomb",
-"diamonds", "paper-plane-o", "anchor", "bolt", "cube", "leaf", "bicycle", "bomb"];
+const cards = ["diamond", "paper-plane-o", "anchor", "bolt", "cube", "leaf", "bicycle", "bomb",
+"diamond", "paper-plane-o", "anchor", "bolt", "cube", "leaf", "bicycle", "bomb"];
 
+let openedCards = [];
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
@@ -27,24 +28,92 @@ function shuffle(array) {
     return array;
 }
 
-function getClass(index) {
-    return "fa-" + cards[index];
+function getSymbol(index) {
+    return "fa-" + cards[index]; // fa-diamond
 }
 function createCardsHTML(array) {
     array = shuffle(array);
-    for (let i = 1; i <= array.length; i++) {
+    for (let i = 0; i < array.length; i++) {
         const listItem = document.createElement("li");
         listItem.classList.add("card");
         const icon = document.createElement("i");
-        const iClass = getClass(i); // get the class of card at index i
+        const symbol = getSymbol(i); // get the class of card at index i
         icon.classList.add("fa");
-        icon.classList.add(iClass);
+        icon.classList.add(symbol);
         listItem.appendChild(icon);
         const list = document.getElementsByClassName("deck");
         list[0].appendChild(listItem);
     }
 }
+function openCard(cardEl1) {
+    cardEl1.classList.add("open");
+    cardEl1.classList.add("show");
+
+}
+
+
+function collectOpenCard(cardEl2){
+    openedCards.push(cardEl2);
+}
+
+function verifyMatch(card1, card2) {
+    const i1 = card1.firstChild;
+    const i2 = card2.firstChild;
+    const class1 = i1.className;
+    const class2 = i2.className;
+    if (class1 === class2) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+function lockOpenCards(carda, cardb) {
+    carda.classList.add("match");
+    cardb.classList.add("match");
+}
+
+function hideSymbols(firstCard, secondCard) {
+    firstCard.classList.remove("show");
+    firstCard.classList.remove("open");
+    secondCard.classList.remove("show");
+    secondCard.classList.remove("open");
+
+}
+
+
+ function matchCards() {
+    if (openedCards.length === 2) {
+        const areMatched = verifyMatch(openedCards[0], openedCards[1]);
+        if (areMatched === true) {
+            lockOpenCards(openedCards[0], openedCards[1]);
+            openedCards = [];
+        }
+        else {
+            hideSymbols(openedCards[0], openedCards[1]);
+            openedCards = [];
+        }
+
+    }
+
+ }
+
 createCardsHTML(cards);
+
+
+
+const cardElements = document.querySelectorAll(".card");
+for (let i = 0; i < cardElements.length; i++) {
+    cardElements[i].addEventListener("click", function() {
+        openCard(cardElements[i]);
+        collectOpenCard(cardElements[i]);
+        matchCards();
+    })
+}
+
+
+
 /*
  * set up the event listener for a card. If a card is clicked:
  *  - display the card's symbol (put this functionality in another function that you call from this one)
