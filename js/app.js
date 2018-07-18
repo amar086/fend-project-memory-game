@@ -13,6 +13,9 @@ const cards = ["diamond", "paper-plane-o", "anchor", "bolt", "cube", "leaf", "bi
 "diamond", "paper-plane-o", "anchor", "bolt", "cube", "leaf", "bicycle", "bomb"];
 
 let openedCards = [];
+
+let moveCounter = 0;
+
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
@@ -99,6 +102,17 @@ function hideSymbols(firstCard, secondCard) {
 
  }
 
+
+
+ function countMoves() {
+    if(openedCards.length === 2) {
+        const movesCounting = document.querySelector(".moves");
+        moveCounter++;
+        movesCounting.textContent = moveCounter;
+    }
+
+ }
+
 createCardsHTML(cards);
 
 
@@ -108,7 +122,9 @@ for (let i = 0; i < cardElements.length; i++) {
     cardElements[i].addEventListener("click", function() {
         openCard(cardElements[i]);
         collectOpenCard(cardElements[i]);
+        countMoves();
         matchCards();
+
     })
 }
 
