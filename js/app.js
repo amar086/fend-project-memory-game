@@ -16,6 +16,10 @@ let openedCards = [];
 
 let moveCounter = 0;
 
+let starRating = ["star", "star", "star"];
+
+
+
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
@@ -85,8 +89,7 @@ function hideSymbols(firstCard, secondCard) {
 
 }
 
-
- function matchCards() {
+function matchCards() {
     if (openedCards.length === 2) {
         const areMatched = verifyMatch(openedCards[0], openedCards[1]);
         if (areMatched === true) {
@@ -104,8 +107,8 @@ function hideSymbols(firstCard, secondCard) {
 
 
 
- function countMoves() {
-    if(openedCards.length === 2) {
+function countMoves() {
+    if (openedCards.length === 2) {
         const movesCounting = document.querySelector(".moves");
         moveCounter++;
         movesCounting.textContent = moveCounter;
@@ -113,8 +116,26 @@ function hideSymbols(firstCard, secondCard) {
 
  }
 
-createCardsHTML(cards);
+function getStars(index) {
+    return "fa-" + starRating[index];
+ }
 
+function displayStar(array2) {
+    for (let i = 0; i < array2.length; i++) {
+        const starList = document.createElement("li");
+        const starIcon = document.createElement("i");
+        const starSymbol = getStars(i);
+        starIcon.classList.add("fa");
+        starIcon.classList.add(starSymbol);
+        starList.appendChild(starIcon);
+        const getList = document.getElementsByClassName("stars");
+        getList[0].appendChild(starList);
+    }
+ }
+
+
+createCardsHTML(cards);
+displayStar(starRating);
 
 
 const cardElements = document.querySelectorAll(".card");
@@ -124,7 +145,6 @@ for (let i = 0; i < cardElements.length; i++) {
         collectOpenCard(cardElements[i]);
         countMoves();
         matchCards();
-
     })
 }
 
