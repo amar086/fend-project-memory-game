@@ -18,6 +18,8 @@ let moveCounter = 0;
 
 let starRating = ["star", "star", "star"];
 
+let matchedCounter = 0;
+
 
 
 // Shuffle function from http://stackoverflow.com/a/2450976
@@ -93,6 +95,7 @@ function matchCards() {
     if (openedCards.length === 2) {
         const areMatched = verifyMatch(openedCards[0], openedCards[1]);
         if (areMatched === true) {
+            matchedCounter += 2;
             lockOpenCards(openedCards[0], openedCards[1]);
             openedCards = [];
         }
@@ -133,20 +136,37 @@ function displayStar(array2) {
     }
  }
 
+function changeStarRating() {
+    const listParent = document.getElementsByClassName("stars")[0];
+    if ((moveCounter === 12 || moveCounter === 24) && openedCards.length === 2) {
+    const firstChild = listParent.firstElementChild;
+        listParent.removeChild(firstChild);
+    }
+
+}
+
+function listenForClick() {
+    const cardElements = document.querySelectorAll(".card");
+    for (let i = 0; i < cardElements.length; i++) {
+        cardElements[i].addEventListener("click", function() {
+            openCard(cardElements[i]);
+            collectOpenCard(cardElements[i]);
+            countMoves();
+            changeStarRating();
+            matchCards();
+
+        })
+    }
+}
+
+
+
 
 createCardsHTML(cards);
 displayStar(starRating);
+listenForClick();
 
 
-const cardElements = document.querySelectorAll(".card");
-for (let i = 0; i < cardElements.length; i++) {
-    cardElements[i].addEventListener("click", function() {
-        openCard(cardElements[i]);
-        collectOpenCard(cardElements[i]);
-        countMoves();
-        matchCards();
-    })
-}
 
 
 
