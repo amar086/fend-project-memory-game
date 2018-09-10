@@ -20,6 +20,13 @@ let starRating = ["star", "star", "star"];
 
 let matchedCounter = 0;
 
+let  timerInterval;
+
+let seconds = 0;
+let minutes = 0;
+let hours = 0;
+
+const parentSection = document.getElementsByClassName("timer");
 
 
 // Shuffle function from http://stackoverflow.com/a/2450976
@@ -154,8 +161,54 @@ function listenForClick() {
             countMoves();
             changeStarRating();
             matchCards();
+            endGameWhenAllMatch();
 
         })
+    }
+}
+
+function refreshTime() {
+    timerInterval = setInterval(setTime, 1000);
+}
+
+
+function getTime() {
+    // TODO: return timer in the format 01:56:05
+    seconds++;
+    if (seconds >= 60) {
+        seconds = 0;
+        minutes++;
+        if (minutes >= 60) {
+            minutes = 0;
+            hours++;
+        }
+    }
+
+    // 09:06:40
+    return (hours > 9 ? hours : "0" + hours) + ":" + (minutes > 9 ? minutes : "0" + minutes) + ":" + (seconds > 9 ? seconds : "0" + seconds);
+}
+
+
+
+function setTime() {
+    let theTime = getTime();
+    const t = document.querySelector("time");
+    t.textContent = theTime;
+}
+
+function timeGame() {
+    const newEl = document.createElement("time");
+    newEl.setAttribute("class", "timing");
+    const time = "00:00:00"; // TODO: get actual value
+    newEl.textContent = time;
+    //const parentSection = document.getElementsByClassName("timer");
+    parentSection[0].appendChild(newEl);
+    refreshTime();
+}
+
+function endGameWhenAllMatch() {
+    if (matchedCounter === cards.length) {
+        clearInterval(timerInterval);
     }
 }
 
@@ -165,6 +218,8 @@ function listenForClick() {
 createCardsHTML(cards);
 displayStar(starRating);
 listenForClick();
+timeGame();
+
 
 
 
