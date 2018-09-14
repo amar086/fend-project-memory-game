@@ -117,3 +117,13 @@ h1 {
 .timer {
     margin=
 }
+
+.congrats-check {
+    color: green;
+}
+.modal-body {
+    text-align: center;
+}
+.modal-footer {
+    text-align: center;
+}

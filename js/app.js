@@ -44,11 +44,12 @@ function shuffle(array) {
     return array;
 }
 
+
 function getSymbol(index) {
     return "fa-" + cards[index]; // fa-diamond
 }
-function createCardsHTML(array) {
-    array = shuffle(array);
+function createCardsHTML() {
+    var array = shuffle(cards);
     for (let i = 0; i < array.length; i++) {
         const listItem = document.createElement("li");
         listItem.classList.add("card");
@@ -61,6 +62,8 @@ function createCardsHTML(array) {
         list[0].appendChild(listItem);
     }
 }
+
+
 function openCard(cardEl1) {
     cardEl1.classList.add("open");
     cardEl1.classList.add("show");
@@ -71,6 +74,7 @@ function openCard(cardEl1) {
 function collectOpenCard(cardEl2){
     openedCards.push(cardEl2);
 }
+
 
 function verifyMatch(card1, card2) {
     const i1 = card1.firstChild;
@@ -85,18 +89,21 @@ function verifyMatch(card1, card2) {
     }
 }
 
+
 function lockOpenCards(carda, cardb) {
     carda.classList.add("match");
     cardb.classList.add("match");
 }
 
-function hideSymbols(firstCard, secondCard) {
+f
+unction hideSymbols(firstCard, secondCard) {
     firstCard.classList.remove("show");
     firstCard.classList.remove("open");
     secondCard.classList.remove("show");
     secondCard.classList.remove("open");
 
 }
+
 
 function matchCards() {
     if (openedCards.length === 2) {
@@ -116,7 +123,6 @@ function matchCards() {
  }
 
 
-
 function countMoves() {
     if (openedCards.length === 2) {
         const movesCounting = document.querySelector(".moves");
@@ -126,9 +132,11 @@ function countMoves() {
 
  }
 
+
 function getStars(index) {
     return "fa-" + starRating[index];
  }
+
 
 function displayStar(array2) {
     for (let i = 0; i < array2.length; i++) {
@@ -143,6 +151,7 @@ function displayStar(array2) {
     }
  }
 
+
 function changeStarRating() {
     const listParent = document.getElementsByClassName("stars")[0];
     if ((moveCounter === 12 || moveCounter === 24) && openedCards.length === 2) {
@@ -152,22 +161,36 @@ function changeStarRating() {
 
 }
 
+
 function listenForClick() {
     const cardElements = document.querySelectorAll(".card");
     for (let i = 0; i < cardElements.length; i++) {
         cardElements[i].addEventListener("click", function() {
-            openCard(cardElements[i]);
-            collectOpenCard(cardElements[i]);
-            countMoves();
-            changeStarRating();
-            matchCards();
-            endGameWhenAllMatch();
+            //check if card is not open execute
 
+            if(cardElements[i].classList.contains("open") === false){
+                openCard(cardElements[i]);
+                collectOpenCard(cardElements[i]);
+                countMoves();
+                changeStarRating();
+                matchCards();
+                endGameWhenAllMatch();
+            }
+
+            if(moveCounter == 0){
+                refreshTime();
+            }
         })
     }
 }
 
+/*
+ start timer
+*/
 function refreshTime() {
+    if(timerInterval != null){
+        clearInterval(timerInterval);
+    }
     timerInterval = setInterval(setTime, 1000);
 }
 
@@ -189,12 +212,12 @@ function getTime() {
 }
 
 
-
 function setTime() {
     let theTime = getTime();
     const t = document.querySelector("time");
     t.textContent = theTime;
 }
+
 
 function timeGame() {
     const newEl = document.createElement("time");
@@ -203,19 +226,84 @@ function timeGame() {
     newEl.textContent = time;
     //const parentSection = document.getElementsByClassName("timer");
     parentSection[0].appendChild(newEl);
-    refreshTime();
 }
 
+
+function popUp() {
+    const getDiv = document.getElementsByClassName("result");
+    const starParent = document.getElementsByClassName("stars")[0];
+    const childrenNum = starParent.childElementCount;
+    const divChild1 = document.createElement("p");
+    const theTimeValue = document.getElementsByTagName("time")[0];
+    const time = theTimeValue.textContent;
+    divChild1.textContent = "With " + moveCounter + " moves " + "and " + childrenNum + " stars " + "in " + time;
+    getDiv[0].appendChild(divChild1);
+    const divChild2 = document.createElement("p");
+    divChild2.textContent = "Woooohoooo!";
+    getDiv[0].appendChild(divChild2);
+    $('#congratsModal').modal('toggle');
+    clickReplay();
+}
+
+
 function endGameWhenAllMatch() {
-    if (matchedCounter === cards.length) {
+     if (matchedCounter === cards.length) {
+        clearInterval(timerInterval);
+        popUp();
+    }
+}
+
+
+function reinitialize() {
+    // reinitialize game board
+    const cardsDeck = document.getElementsByClassName("deck")[0];
+    cardsDeck.innerHTML = "";
+    createCardsHTML();
+    listenForClick();
+
+    // reinitialize stars
+    const theStars = document.getElementsByClassName("stars")[0];
+    theStars.innerHTML = "";
+    displayStar(starRating);
+
+    // reinitialize moves
+    moveCounter = 0;
+    const moveSection = document.querySelector(".moves");
+    moveSection.textContent = moveCounter;
+
+    //reinitialize timer
+    //clearInterval(timerInterval);
+    seconds = 0;
+    minutes = 0;
+    hours =0;
+    const timeReset = document.querySelector("time");
+    timeReset.textContent = "00:00:00";
+
+    //reinitialize the list of opened cards
+    openedCards = [];
+
+    //reinitialize matched cards counter
+    matchedCounter = 0;
+
+    // reinitialize popup content
+    const modalContent = document.getElementsByClassName("result")[0];
+    modalContent.innerHTML = "";
+    if(timerInterval != null){
         clearInterval(timerInterval);
     }
 }
 
 
+function clickReplay() {
+    const startOverBtn = document.getElementsByClassName("replay");
+        startOverBtn[0].addEventListener("click", function() {
+            $('#congratsModal').modal('hide');
+            reinitialize();
+        });
+}
 
 
-createCardsHTML(cards);
+createCardsHTML()
 displayStar(starRating);
 listenForClick();
 timeGame();
