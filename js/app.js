@@ -45,9 +45,12 @@ function shuffle(array) {
 }
 
 
+//the next functions display the cards symbols
 function getSymbol(index) {
     return "fa-" + cards[index]; // fa-diamond
 }
+
+
 function createCardsHTML() {
     var array = shuffle(cards);
     for (let i = 0; i < array.length; i++) {
@@ -64,9 +67,14 @@ function createCardsHTML() {
 }
 
 
+//add cards to a list of open cards when open
 function openCard(cardEl1) {
-    cardEl1.classList.add("open");
-    cardEl1.classList.add("show");
+
+    //setTimeout (function() {
+        cardEl1.classList.add("clicked");
+        cardEl1.classList.add("open");
+        cardEl1.classList.add("show");
+    //}, 1000);
 
 }
 
@@ -76,6 +84,7 @@ function collectOpenCard(cardEl2){
 }
 
 
+//verify if cards match
 function verifyMatch(card1, card2) {
     const i1 = card1.firstChild;
     const i2 = card2.firstChild;
@@ -95,16 +104,28 @@ function lockOpenCards(carda, cardb) {
     cardb.classList.add("match");
 }
 
-f
-unction hideSymbols(firstCard, secondCard) {
-    firstCard.classList.remove("show");
-    firstCard.classList.remove("open");
-    secondCard.classList.remove("show");
-    secondCard.classList.remove("open");
+//hide cards symbols
+function hideSymbols(firstCard, secondCard) {
+
+    firstCard.classList.add("nomatch");
+    secondCard.classList.add("nomatch");
+
+    setTimeout(function(){
+        firstCard.classList.remove("show");
+        firstCard.classList.remove("open");
+        secondCard.classList.remove("show");
+        secondCard.classList.remove("open");
+        firstCard.classList.remove("clicked");
+        secondCard.classList.remove("clicked");
+        firstCard.classList.remove("nomatch");
+        secondCard.classList.remove("nomatch");
+    }, 1000);
+
 
 }
 
-
+//lock cards in the open position when they match
+//remove cards from open cards lists when they do not match
 function matchCards() {
     if (openedCards.length === 2) {
         const areMatched = verifyMatch(openedCards[0], openedCards[1]);
@@ -122,7 +143,7 @@ function matchCards() {
 
  }
 
-
+//increment move counter
 function countMoves() {
     if (openedCards.length === 2) {
         const movesCounting = document.querySelector(".moves");
@@ -132,7 +153,7 @@ function countMoves() {
 
  }
 
-
+//create stars and display them
 function getStars(index) {
     return "fa-" + starRating[index];
  }
@@ -151,7 +172,7 @@ function displayStar(array2) {
     }
  }
 
-
+//change star rating based on number of moves
 function changeStarRating() {
     const listParent = document.getElementsByClassName("stars")[0];
     if ((moveCounter === 12 || moveCounter === 24) && openedCards.length === 2) {
@@ -161,13 +182,11 @@ function changeStarRating() {
 
 }
 
-
+//event listener function
 function listenForClick() {
     const cardElements = document.querySelectorAll(".card");
     for (let i = 0; i < cardElements.length; i++) {
         cardElements[i].addEventListener("click", function() {
-            //check if card is not open execute
-
             if(cardElements[i].classList.contains("open") === false){
                 openCard(cardElements[i]);
                 collectOpenCard(cardElements[i]);
@@ -184,9 +203,9 @@ function listenForClick() {
     }
 }
 
-/*
- start timer
-*/
+
+//the following 4 functions set and display timer
+
 function refreshTime() {
     if(timerInterval != null){
         clearInterval(timerInterval);
@@ -196,7 +215,6 @@ function refreshTime() {
 
 
 function getTime() {
-    // TODO: return timer in the format 01:56:05
     seconds++;
     if (seconds >= 60) {
         seconds = 0;
@@ -228,7 +246,7 @@ function timeGame() {
     parentSection[0].appendChild(newEl);
 }
 
-
+//create a end of game modal showing a recap of game
 function popUp() {
     const getDiv = document.getElementsByClassName("result");
     const starParent = document.getElementsByClassName("stars")[0];
@@ -245,7 +263,7 @@ function popUp() {
     clickReplay();
 }
 
-
+//indicate the end of the game
 function endGameWhenAllMatch() {
      if (matchedCounter === cards.length) {
         clearInterval(timerInterval);
@@ -293,7 +311,7 @@ function reinitialize() {
     }
 }
 
-
+//replay button
 function clickReplay() {
     const startOverBtn = document.getElementsByClassName("replay");
         startOverBtn[0].addEventListener("click", function() {
