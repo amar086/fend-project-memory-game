@@ -2,19 +2,20 @@
 
 ## Table of Contents
 
-* [Instructions](#instructions)
-* [Contributing](#contributing)
+* Game Description
+* Resources Used
 
-## Instructions
+## Game Description
 
-The starter project has some HTML and CSS styling to display a static version of the Memory Game project. You'll need to convert this project from a static project to an interactive one. This will require modifying the HTML and CSS files, but primarily the JavaScript file.
+The game displays cards that are randomly shuffled. A move counter, a timer and a star rating are present on the page. A player starts the game by flipping over the cards trying to match them by pair. Anytime two cards are clicked, one move is made and is registered by the move counter. The game is won once all cards have been successfully matched. At that moment, a popup appears on the page congratulating the player and detailing the time spent, the star rating and how many moves were made. A reset button allows the player to reset the game and play again if desired.
 
-To get started, open `js/app.js` and start building out the app's functionality
 
-For specific, detailed instructions, look at the project instructions in the [Udacity Classroom](https://classroom.udacity.com/me).
 
-## Contributing
+## Resources Used
 
-This repository is the starter code for _all_ Udacity students. Therefore, we most likely will not accept pull requests.
-
-For details, check out [CONTRIBUTING.md](CONTRIBUTING.md).
+* ES6
+* Boostrap 4.1.3
+* Font-awesome 4.6.1
+* Google Fonts
+* jQuery
+* popper.js
