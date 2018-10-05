@@ -31,7 +31,7 @@ const parentSection = document.getElementsByClassName("timer");
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
-    var currentIndex = array.length, temporaryValue, randomIndex;
+    let currentIndex = array.length, temporaryValue, randomIndex;
 
     while (currentIndex !== 0) {
         randomIndex = Math.floor(Math.random() * currentIndex);
@@ -104,6 +104,7 @@ function lockOpenCards(carda, cardb) {
     cardb.classList.add("match");
 }
 
+
 //hide cards symbols
 function hideSymbols(firstCard, secondCard) {
 
@@ -120,9 +121,8 @@ function hideSymbols(firstCard, secondCard) {
         firstCard.classList.remove("nomatch");
         secondCard.classList.remove("nomatch");
     }, 1000);
-
-
 }
+
 
 //lock cards in the open position when they match
 //remove cards from open cards lists when they do not match
@@ -143,6 +143,7 @@ function matchCards() {
 
  }
 
+
 //increment move counter
 function countMoves() {
     if (openedCards.length === 2) {
@@ -152,6 +153,7 @@ function countMoves() {
     }
 
  }
+
 
 //create stars and display them
 function getStars(index) {
@@ -172,6 +174,7 @@ function displayStar(array2) {
     }
  }
 
+
 //change star rating based on number of moves
 function changeStarRating() {
     const listParent = document.getElementsByClassName("stars")[0];
@@ -181,6 +184,7 @@ function changeStarRating() {
     }
 
 }
+
 
 //event listener function
 function listenForClick() {
@@ -246,6 +250,7 @@ function timeGame() {
     parentSection[0].appendChild(newEl);
 }
 
+
 //create a end of game modal showing a recap of game
 function popUp() {
     const getDiv = document.getElementsByClassName("result");
@@ -262,6 +267,7 @@ function popUp() {
     $('#congratsModal').modal('toggle');
     clickReplay();
 }
+
 
 //indicate the end of the game
 function endGameWhenAllMatch() {
@@ -310,6 +316,7 @@ function reinitialize() {
         clearInterval(timerInterval);
     }
 }
+
 
 //replay button
 function clickReplay() {
